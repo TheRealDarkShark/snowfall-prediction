@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 while (
         station := input("Which station do you want to predict snow for the 2021-2022 year?: ").lower()
 ) not in ("dca", "iad", "bwi"):
@@ -43,46 +45,37 @@ with open("pdo.txt") as file:
         line = line.split()
         pdo[int(line[0])] = list(map(float, line[1:]))
 
-print(pdo)
-
 
 def get_analog(year: int):
-    analogs = {}
+    analogs = defaultdict(int)
     cur_year = oni[year]
-    snow_cur = snowfall[year]
-    temp_cur = temperature[year]
-    for key, value in oni.items():
-        if key < year:
-            score = 0
-            for month_oni, cur_month_oni in zip(cur_year, value[:len(cur_year)]):
-                if cur_month_oni > month_oni:
-                    score += (cur_month_oni - month_oni) ** 2
-                elif cur_month_oni < month_oni:
-                    score += (month_oni - cur_month_oni) ** 2
 
-            analogs[key] = score
+    def calculate_analog_score(factor: dict, raise_to: int):
+        for key, value in factor.items():
+            if year > key > 1950:
+                score = 0
+                for month_fac, cur_month_fac in zip(cur_year, value[:len(cur_year)]):
+                    score += (max((cur_month_fac, month_fac)) - min((cur_month_fac, month_fac))) ** raise_to
 
-    for key, value in snowfall.items():
-        if key < year and key in analogs.keys():
-            score = 0
-            for month_snow, cur_month_snow in zip(snow_cur, value):
-                if cur_month_snow > month_snow:
-                    score += (cur_month_snow - month_snow) ** 2
-                elif month_snow > cur_month_snow:
-                    score += (month_snow - cur_month_snow) ** 2
+                analogs[key] += score
 
-            analogs[key] += score
+    # calculate score for oni
+    calculate_analog_score(oni, 2)
 
-    for key, value in temperature.items():
-        if key < year and key in analogs.items():
-            score = 0
-            for month_temp, cur_temp in zip(temp_cur, value[:len(temp_cur)]):
-                if cur_temp > month_temp:
-                    score += (cur_temp - month_temp) ** 2
-                elif cur_temp < month_temp:
-                    score += (month_temp - cur_temp) ** 2
+    # calculate score for snowfall
+    calculate_analog_score(snowfall, 2)
 
-            analogs[key] += score
+    # calculate score for temperatures
+    calculate_analog_score(temperature, 2)
+
+    # calculate score based off of NAO teleconnections
+    calculate_analog_score(nao, 2)
+
+    # calculate score based off of AO teleconnections
+    calculate_analog_score(ao, 2)
+
+    # calculate score based off of PDO teleconnections
+    calculate_analog_score(pdo, 2)
 
     return analogs, cur_year
 
