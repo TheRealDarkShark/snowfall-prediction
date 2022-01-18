@@ -52,7 +52,7 @@ def get_analog(year: int):
 
     def calculate_analog_score(factor: dict, raise_to: int):
         for key, value in factor.items():
-            if year > key > 1950:
+            if year > key > min(snowfall.keys()):
                 score = 0
                 for month_fac, cur_month_fac in zip(cur_year, value[:len(cur_year)]):
                     score += (max((cur_month_fac, month_fac)) - min((cur_month_fac, month_fac))) ** raise_to
