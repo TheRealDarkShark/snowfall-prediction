@@ -25,6 +25,14 @@ with open(f"temperature_{station}.txt") as file:
         line = line.split()
         temperature[int(line[0])] = list(map(float, line[1:]))
 
+nao = {}
+with open("nao.txt") as file:
+    for line in file.readlines():
+        line = line.split()
+        nao[int(line[0])] = list(map(float, line[1:]))
+
+print(nao)
+
 
 def get_analog(year: int):
     analogs = {}
