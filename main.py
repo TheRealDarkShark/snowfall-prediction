@@ -31,7 +31,13 @@ with open("nao.txt") as file:
         line = line.split()
         nao[int(line[0])] = list(map(float, line[1:]))
 
-print(nao)
+ao = {}
+with open("ao.txt") as file:
+    for line in file.readlines():
+        line = line.split()
+        ao[int(line[0])] = list(map(float, line[1:]))
+
+print(ao)
 
 
 def get_analog(year: int):
