@@ -37,7 +37,13 @@ with open("ao.txt") as file:
         line = line.split()
         ao[int(line[0])] = list(map(float, line[1:]))
 
-print(ao)
+pdo = {}
+with open("pdo.txt") as file:
+    for line in file.readlines():
+        line = line.split()
+        pdo[int(line[0])] = list(map(float, line[1:]))
+
+print(pdo)
 
 
 def get_analog(year: int):
