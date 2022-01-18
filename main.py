@@ -1,12 +1,17 @@
+while (
+        station := input("Which station do you want to predict snow for the 2021-2022 year?: ").lower()
+) not in ("dca", "iad", "bwi"):
+    print("Invalid input. The station must either be DCA, BWI, or IAD (case insensitive)")
+
 oni = {}
 
-with open("states.txt") as file:
+with open("oni.txt") as file:
     for line in file.readlines():
         line = line.split()
         oni[int(line[0])] = list(map(float, line[1:]))
 
 snowfall = {}
-with open("snowfall.txt") as file:
+with open(f"snowfall_{station}.txt") as file:
     for line in file.readlines():
         line = line.split()
         if line[0] != "1999-00":
@@ -15,10 +20,11 @@ with open("snowfall.txt") as file:
             snowfall[2000] = list(map(lambda x: float(x) if x != "T" else 0.01, line[6:12]))
 
 temperature = {}
-with open("temperature.txt") as file:
+with open(f"temperature_{station}.txt") as file:
     for line in file.readlines():
         line = line.split()
         temperature[int(line[0])] = list(map(float, line[1:]))
+
 
 def get_analog(year: int):
     analogs = {}
@@ -71,4 +77,4 @@ avg = 0
 for year in result[:10]:
     avg += sum(snowfall[year][-3:] + snowfall[year + 1][:4])
 
-print(f"Average for DCA predicted: {avg / 10:.3f}\"")
+print(f"Average for {station.upper()} predicted: {avg / 10:.3f}\"")
