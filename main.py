@@ -71,10 +71,16 @@ def average(iterable):
     return sum(iterable) / len(iterable)
 
 
-value = get_analog(2021)[0]
-result = sorted(value, key=value.__getitem__)
+analogs = get_analog(2021)[0]
+result = sorted(analogs, key=analogs.__getitem__)
 avg = 0
 for year in result[:10]:
     avg += sum(snowfall[year][-3:] + snowfall[year + 1][:4])
 
-print(f"Average for {station.upper()} predicted: {avg / 10:.3f}\"")
+formatted_years = [
+    f"\t\n⚫ {year}-{year + 1}: {sum(snowfall[year][-3:] + snowfall[year + 1][:4]):.3f}\""
+    for year in result[:10]
+]
+
+print(f"Total snowfall for the 2021-2022 year at {station.upper()} predicted to be: {avg / 10:.3f}\"")
+print(f"Top analogs for {station.upper()} are:{''.join(formatted_years)}")
