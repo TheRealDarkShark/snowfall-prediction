@@ -13,6 +13,8 @@ with open("oceanic_nino_index/oni.txt") as file:
         oni[int(line[0])] = list(map(float, line[1:]))
 
 snowfall = {}
+snowfall_total = {}
+
 with open(f"snowfall_data/snowfall_{station}.txt") as file:
     for line in file.readlines():
         line = line.split()
@@ -20,6 +22,8 @@ with open(f"snowfall_data/snowfall_{station}.txt") as file:
             snowfall[int(line[0][:2] + line[0].split("-")[-1])] = list(map(lambda x: float(x) if x != "T" else 0.01, line[6:12]))
         else:
             snowfall[2000] = list(map(lambda x: float(x) if x != "T" else 0.01, line[6:12]))
+
+        snowfall_total[line[0]] = float(line[-1])
 
 temperature = {}
 with open(f"temperature_data/temperature_{station}.txt") as file:
@@ -60,13 +64,13 @@ def get_analog(year: int):
                 analogs[key] += score
 
     # calculate score for oni
-    calculate_analog_score(oni, 2)
+    calculate_analog_score(oni, 3)
 
     # calculate score for snowfall
     calculate_analog_score(snowfall, 2)
 
     # calculate score for temperatures
-    calculate_analog_score(temperature, 2)
+    calculate_analog_score(temperature, 1)
 
     # calculate score based off of NAO teleconnections
     calculate_analog_score(nao, 2)
@@ -88,10 +92,10 @@ analogs = get_analog(2021)[0]
 result = sorted(analogs, key=analogs.__getitem__)
 avg = 0
 for year in result[:10]:
-    avg += sum(snowfall[year][-3:] + snowfall[year + 1][:4])
+    avg += snowfall_total[f"{year}-{str(year + 1)[-2:]}"]
 
 formatted_years = [
-    f"\t\n⚫ {year}-{year + 1}: {sum(snowfall[year][-3:] + snowfall[year + 1][:4]):.3f}\""
+    f"\t\n⚫ {year}-{year + 1}: {snowfall_total[f'{year}-{str(year + 1)[-2:]}']:.3f}\""
     for year in result[:10]
 ]
 
