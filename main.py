@@ -7,13 +7,13 @@ while (
 
 oni = {}
 
-with open("oni.txt") as file:
+with open("oceanic_nino_index/oni.txt") as file:
     for line in file.readlines():
         line = line.split()
         oni[int(line[0])] = list(map(float, line[1:]))
 
 snowfall = {}
-with open(f"snowfall_{station}.txt") as file:
+with open(f"snowfall_data/snowfall_{station}.txt") as file:
     for line in file.readlines():
         line = line.split()
         if line[0] != "1999-00":
@@ -22,25 +22,25 @@ with open(f"snowfall_{station}.txt") as file:
             snowfall[2000] = list(map(lambda x: float(x) if x != "T" else 0.01, line[6:12]))
 
 temperature = {}
-with open(f"temperature_{station}.txt") as file:
+with open(f"temperature_data/temperature_{station}.txt") as file:
     for line in file.readlines():
         line = line.split()
         temperature[int(line[0])] = list(map(float, line[1:]))
 
 nao = {}
-with open("nao.txt") as file:
+with open("teleconnections/nao.txt") as file:
     for line in file.readlines():
         line = line.split()
         nao[int(line[0])] = list(map(float, line[1:]))
 
 ao = {}
-with open("ao.txt") as file:
+with open("teleconnections/ao.txt") as file:
     for line in file.readlines():
         line = line.split()
         ao[int(line[0])] = list(map(float, line[1:]))
 
 pdo = {}
-with open("pdo.txt") as file:
+with open("teleconnections/pdo.txt") as file:
     for line in file.readlines():
         line = line.split()
         pdo[int(line[0])] = list(map(float, line[1:]))
