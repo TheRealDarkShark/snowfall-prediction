@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 while (
-        station := input("Which station do you want to predict snow for the 2021-2022 year?: ").lower()
+        station := input("Which station do you want to predict snow for the 2022-2023 year?: ").lower()
 ) not in ("dca", "iad", "bwi"):
     print("Invalid input. The station must either be DCA, BWI, or IAD (case insensitive)")
 
@@ -88,7 +88,7 @@ def average(iterable):
     return sum(iterable) / len(iterable)
 
 
-analogs = get_analog(2021)[0]
+analogs = get_analog(2022)[0]
 result = sorted(analogs, key=analogs.__getitem__)
 avg = 0
 for year in result[:10]:
@@ -101,6 +101,6 @@ formatted_years = [
 
 print(
     f"⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n"
-    f"Total snowfall for the 2021-2022 year at {station.upper()} predicted to be: {avg / 10:.1f}\""
+    f"Total snowfall for the 2022-2023 year at {station.upper()} predicted to be: {avg / 10:.1f}\""
 )
 print(f"⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\nTop analogs for {station.upper()} are: {''.join(formatted_years)}")
